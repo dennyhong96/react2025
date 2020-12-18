@@ -1,23 +1,28 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { useAuth } from "../lib/auth";
+import { Button, Code, Heading, Text } from "@chakra-ui/react";
+
+import { useAuth } from "@/lib/auth";
 
 export default function Home() {
   const { user, signinWithGithub, signout } = useAuth();
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Fast Feedback</title>
       </Head>
 
-      <main className={styles.main}>
-        <button onClick={signinWithGithub}>Sign In</button>
-        <div>{user?.email}</div>
-        {user && <button onClick={signout}>Sign Out</button>}
+      <main>
+        <Heading>Fast Feedback</Heading>
+
+        <Text>
+          Current user: <Code>{user?.email}</Code>
+        </Text>
+
+        {!user && <Button onClick={signinWithGithub}>Sign In</Button>}
+        {user && <Button onClick={signout}>Sign Out</Button>}
       </main>
 
-      <footer className={styles.footer}></footer>
+      <footer></footer>
     </div>
   );
 }
