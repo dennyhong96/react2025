@@ -6,6 +6,7 @@ import { Logo } from "@/components/icons";
 
 export default function Home() {
   const { user, signinWithGithub, signout } = useAuth();
+
   return (
     <Flex as="main" direction="column" align="center" justify="center" h="100vh">
       <Head>
