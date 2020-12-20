@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 
 import { useAuth } from "@/lib/auth";
-import Feedback from "@/components/Feedback";
-import { listFeedback, listSites } from "@/lib/db-admin";
 import { createFeedback } from "@/lib/db";
+import { listFeedback, listSites } from "@/lib/db-admin";
+import Feedback from "@/components/Feedback";
 
 const SiteFeedback = ({ initialFeedback }) => {
   console.log("initialFeedback", initialFeedback);
