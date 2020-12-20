@@ -51,9 +51,9 @@ const AddSiteModal = ({ children = "Add Your First Site" }) => {
 
     // Mutates cache of all SWRs with key `/api/sites`
     mutate(
-      "/api/sites",
+      ["/api/sites", user.token],
       (cachedData) => ({
-        sites: [...cachedData.sites, { id, ...newSiteData }],
+        sites: [{ id, ...newSiteData }, ...cachedData.sites],
       }),
       false // Whether refetch from api to overwrite cache or not
     );
