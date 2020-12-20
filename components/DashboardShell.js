@@ -9,6 +9,7 @@ import {
   BreadcrumbLink,
   Heading,
 } from "@chakra-ui/react";
+import AddSiteModal from "./AddSiteModal";
 import { Logo } from "./icons";
 
 const DashboardShell = ({ children }) => {
@@ -32,7 +33,7 @@ const DashboardShell = ({ children }) => {
 
         <Flex>
           <Link mr={4}>Account</Link>
-          <Avatar size="sm" src={user.photoUrl} />
+          <Avatar size="sm" src={user?.photoUrl} />
         </Flex>
       </Flex>
 
@@ -47,9 +48,10 @@ const DashboardShell = ({ children }) => {
             </BreadcrumbItem>
           </Breadcrumb>
 
-          <Heading color="black" mb={4}>
-            Sites
-          </Heading>
+          <Flex justify="space-between">
+            <Heading mb={8}>My Sites</Heading>
+            <AddSiteModal>+ Add Site</AddSiteModal>
+          </Flex>
 
           {/* Children View */}
           {children}

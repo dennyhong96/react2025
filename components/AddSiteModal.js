@@ -12,30 +12,69 @@ import {
   Input,
   useDisclosure,
   Button,
+  useToast,
 } from "@chakra-ui/react";
+import { mutate } from "swr";
 import { useForm } from "react-hook-form";
-import { createSite } from "@/lib/db";
 
-const AddSiteModal = () => {
+import { createSite } from "@/lib/db";
+import { useAuth } from "@/lib/auth";
+
+const AddSiteModal = ({ children = "Add Your First Site" }) => {
+  const { user } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef();
   const finalRef = useRef();
+  const toast = useToast();
 
-  const { register, handleSubmit, watch, errors } = useForm();
-  const handleCreateSite = (data) => createSite(data);
+  const { register, handleSubmit } = useForm();
+  const handleCreateSite = async (formData) => {
+    // Adds new site to DB and gets auto generated ID from DB
+    const newSiteData = {
+      authorId: user.uid,
+      createdAt: new Date().toISOString(),
+      ...formData,
+    };
+    const { id } = await createSite(newSiteData);
+
+    // Close the modal
+    onClose();
+
+    // Displays a toast
+    toast({
+      title: "Success!",
+      description: "We've added your site.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+
+    // Mutates cache of all SWRs with key `/api/sites`
+    mutate(
+      "/api/sites",
+      (cachedData) => ({
+        sites: [...cachedData.sites, { id, ...newSiteData }],
+      }),
+      false // Whether refetch from api to overwrite cache or not
+    );
+  };
 
   return (
     <Fragment>
       {/* Add site button */}
       <Button
+        backgroundColor="gray.900"
+        color="white"
+        fontWeight="medium"
+        _hover={{ bg: "gray.700" }}
+        _active={{
+          bg: "gray.800",
+          transform: "scale(0.95)",
+        }}
         ref={finalRef}
         onClick={onOpen}
-        variant="solid"
-        size="md"
-        maxW="200px"
-        fontWeight="medium"
       >
-        Add your first site
+        {children}
       </Button>
 
       {/* Modal */}
