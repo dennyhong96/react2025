@@ -9,7 +9,7 @@ import { useAuth } from "@/lib/auth";
 
 const dashboard = () => {
   const { user } = useAuth();
-  const { data, error } = useSWR("/api/sites", fetcher);
+  const { data, error } = useSWR(user ? ["/api/sites", user.token] : null, fetcher);
 
   console.log("/api/sites data", data);
 
