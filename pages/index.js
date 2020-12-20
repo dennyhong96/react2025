@@ -11,6 +11,17 @@ export default function Home() {
     <Flex as="main" direction="column" align="center" justify="center" h="100vh">
       <Head>
         <title>Fast Feedback</title>
+
+        {/* Redirect authenticated user */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          if (document.cookie && document.cookie.includes('AUTHENTICATED')) {
+            window.location.href = "/dashboard"
+          }
+        `,
+          }}
+        />
       </Head>
 
       <Logo color="black" boxSize={12} />
