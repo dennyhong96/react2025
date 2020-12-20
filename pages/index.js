@@ -1,11 +1,12 @@
 import Head from "next/head";
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Stack } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 import { useAuth } from "@/lib/auth";
-import { Logo } from "@/components/icons";
+import { Github, Google, Logo } from "@/components/icons";
 
 export default function Home() {
-  const { user, signinWithGithub, signout } = useAuth();
+  const { user, signinWithGithub, signinWithGoogle } = useAuth();
 
   return (
     <Flex as="main" direction="column" align="center" justify="center" h="100vh">
@@ -24,15 +25,69 @@ export default function Home() {
         />
       </Head>
 
-      <Logo color="black" boxSize={12} />
+      <Logo color="black" boxSize={24} />
 
+      {/* User not logged in */}
       {!user && (
-        <Button mt={4} size="sm" onClick={signinWithGithub}>
-          Sign In
-        </Button>
+        <Stack>
+          <Button
+            onClick={signinWithGithub}
+            leftIcon={<Github />}
+            mt={4}
+            size="lg"
+            backgroundColor="gray.900"
+            color="white"
+            fontWeight="medium"
+            _hover={{ bg: "gray.700" }}
+            _active={{
+              bg: "gray.800",
+              transform: "scale(0.95)",
+            }}
+          >
+            Sign In with Github
+          </Button>
+
+          <Button
+            onClick={signinWithGoogle}
+            leftIcon={<Google />}
+            mt={4}
+            size="lg"
+            backgroundColor="white"
+            color="gray.900"
+            variant="outline"
+            fontWeight="medium"
+            _hover={{ bg: "gray.100" }}
+            _active={{
+              bg: "gray.100",
+              transform: "scale(0.95)",
+            }}
+          >
+            Sign In with Google
+          </Button>
+        </Stack>
       )}
 
-      {user && <Button onClick={signout}>Sign Out</Button>}
+      {/* User logged in */}
+      {user && (
+        <NextLink href="/dashboard" passHref>
+          <Button
+            as="a"
+            mt={4}
+            size="lg"
+            backgroundColor="white"
+            color="gray.900"
+            variant="outline"
+            fontWeight="medium"
+            _hover={{ bg: "gray.100" }}
+            _active={{
+              bg: "gray.100",
+              transform: "scale(0.95)",
+            }}
+          >
+            View Dashboard
+          </Button>
+        </NextLink>
+      )}
     </Flex>
   );
 }

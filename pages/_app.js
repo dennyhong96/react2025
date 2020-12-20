@@ -17,6 +17,7 @@ const GlobalStyles = () => {
           display: flex;
           flex-direction: column;
           min-height: 100vh;
+          background-color: #edf2f7;
         }
       `}
     />
