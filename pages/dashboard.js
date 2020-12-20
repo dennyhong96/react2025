@@ -23,7 +23,7 @@ const dashboard = () => {
 
   return (
     <DashboardShell>
-      {!data?.sites?.length ? <EmptyState /> : <SiteTables sites={data.sites} />}
+      {!data.sites?.length ? <EmptyState /> : <SiteTables sites={data.sites} />}
     </DashboardShell>
   );
 };

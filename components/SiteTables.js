@@ -1,20 +1,11 @@
+import NextLink from "next/link";
 import { Box, Link } from "@chakra-ui/react";
-import { useRef } from "react";
 
+import useDateFormat from "@/hooks/useDateFormat";
 import { Table, Tr, Th, Td } from "./Table";
 
 const SiteTable = ({ sites }) => {
-  const intlRef = useRef((date) => {
-    return new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour12: true,
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-    }).format(date);
-  });
+  const { format } = useDateFormat();
 
   return (
     <Table>
@@ -34,9 +25,11 @@ const SiteTable = ({ sites }) => {
             <Td fontWeight="medium">{site.name}</Td>
             <Td>{site.url}</Td>
             <Td>
-              <Link>View Feedback</Link>
+              <NextLink href={`/p/${site.id}`} passHref>
+                <Link>View Feedback</Link>
+              </NextLink>
             </Td>
-            <Td>{intlRef.current(new Date(site.createdAt))}</Td>
+            <Td>{format(site.createdAt)}</Td>
             <Td>{""}</Td>
           </Box>
         ))}
