@@ -15,6 +15,8 @@ const SiteFeedback = ({ initialFeedback }) => {
   const { user } = useAuth();
   const inputRef = useRef();
 
+  console.log(router);
+
   const handleSubmit = async (evt) => {
     try {
       evt.preventDefault();
