@@ -37,7 +37,7 @@ const AddSiteModal = ({ children = "Add Your First Site" }) => {
     };
     const { id } = createSite(newSiteData);
 
-    // Close the modal
+    // Close the modal.
     onClose();
 
     // Displays a toast
