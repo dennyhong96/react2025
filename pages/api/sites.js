@@ -13,7 +13,7 @@ export default async (req, res) => {
 
     return res.status(200).json({ sites });
   } catch (error) {
-    logger.info(
+    logger.error(
       {
         request: {
           headers: prepObjectKeys(req.headers),
