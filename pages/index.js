@@ -4,8 +4,10 @@ import NextLink from "next/link";
 
 import { useAuth } from "@/lib/auth";
 import { Github, Google, Logo } from "@/components/icons";
+import { listFeedbackBySite } from "@/lib/db-admin";
+import Feedback from "@/components/Feedback";
 
-export default function Home() {
+export default function Home({ allFeedback }) {
   const { user, signinWithGithub, signinWithGoogle } = useAuth();
 
   return (
@@ -88,6 +90,19 @@ export default function Home() {
           </Button>
         </NextLink>
       )}
+
+      {allFeedback.map((feedback) => (
+        <Feedback key={feedback.id} {...feedback} />
+      ))}
     </Flex>
   );
 }
+
+export const getStaticProps = async () => {
+  const myDemoSiteId = "1pZLo9KTYreZzYBd3ikp";
+  const { feedback } = await listFeedbackBySite(myDemoSiteId);
+  return {
+    props: { allFeedback: feedback ?? [] },
+    revalidate: 1,
+  };
+};

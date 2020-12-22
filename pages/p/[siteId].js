@@ -45,7 +45,7 @@ const SiteFeedback = ({ initialFeedback }) => {
         <FormControl id="comment" my={8}>
           <FormLabel>Comment</FormLabel>
           <Input ref={inputRef} type="text" />
-          <Button fontWeight="medium" mt={2} type="submit">
+          <Button fontWeight="medium" mt={2} type="submit" disabled={router.isFallback}>
             Add Comment
           </Button>
         </FormControl>

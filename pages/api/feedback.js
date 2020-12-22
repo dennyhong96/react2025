@@ -10,7 +10,7 @@ export default async (req, res) => {
 
     res.status(200).json({ feedback });
   } catch (error) {
-    logger.info(
+    logger.error(
       {
         request: {
           headers: prepObjectKeys(req.headers),
