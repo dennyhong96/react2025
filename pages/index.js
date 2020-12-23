@@ -18,7 +18,7 @@ export default function Home({ allFeedback }) {
           dangerouslySetInnerHTML={{
             __html: `
           if (document.cookie && document.cookie.includes('AUTHENTICATED')) {
-            window.location.href = "/dashboard"
+            window.location.href = "/sites"
           }
         `,
           }}
@@ -69,7 +69,7 @@ export default function Home({ allFeedback }) {
 
       {/* User logged in */}
       {user && (
-        <NextLink href="/dashboard" passHref>
+        <NextLink href="/sites" passHref>
           <Button
             as="a"
             mt={4}

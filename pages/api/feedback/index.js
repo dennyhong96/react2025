@@ -1,18 +1,17 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
-import { listSitesByUser } from "@/lib/db-admin";
+import { listFeedbackByUser } from "@/lib/db-admin";
 import { auth } from "@/lib/firebase-admin";
 import logger, { prepObjectKeys } from "@/utils/logger";
 
 export default async (req, res) => {
   try {
-    // Call firebase to get user id from token
     const { uid } = await auth.verifyIdToken(req.headers.token);
 
-    const { sites } = await listSitesByUser(uid);
+    const { feedback } = await listFeedbackByUser(uid);
 
-    return res.status(200).json({ sites });
+    res.status(200).json({ feedback });
   } catch (error) {
+    console.error(error);
+
     logger.error(
       {
         request: {
@@ -27,6 +26,6 @@ export default async (req, res) => {
       error.message
     );
 
-    return res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 };

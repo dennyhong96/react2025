@@ -7,7 +7,7 @@ const SiteTableHeader = ({ stripeRole }) => {
   return (
     <Fragment>
       <Breadcrumb>
-        <BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink color="gray.700" fontSize="sm">
             Sites
           </BreadcrumbLink>

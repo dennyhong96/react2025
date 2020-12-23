@@ -1,9 +1,10 @@
-import { Box, Code, Switch } from "@chakra-ui/react";
-
-import { Table, Tr, Th, Td } from "./Table";
-import RemoveButton from "./RemoveButton";
+import { Table, Tr, Th } from "@/components/Table";
+import { useAuth } from "@/lib/auth";
+import FeedbackRow from "@/components/FeedbackRow";
 
 const FeedbackTable = ({ allFeedback }) => {
+  const { user } = useAuth();
+
   return (
     <Table>
       <thead>
@@ -18,19 +19,7 @@ const FeedbackTable = ({ allFeedback }) => {
 
       <tbody>
         {allFeedback.map((feedback) => (
-          <Box as="tr" key={feedback.id}>
-            <Td fontWeight="medium">{feedback.author}</Td>
-            <Td>{feedback.text}</Td>
-            <Td>
-              <Code>/route</Code>
-            </Td>
-            <Th>
-              <Switch colorScheme="green" defaultChecked={feedback.status === "active"} />
-            </Th>
-            <Td>
-              <RemoveButton feedbackId={feedback.id} />
-            </Td>
-          </Box>
+          <FeedbackRow key={feedback.id} user={user} feedback={feedback} />
         ))}
       </tbody>
     </Table>

@@ -7,20 +7,22 @@ import { useAuth } from "@/lib/auth";
 import { Logo } from "./icons";
 import { Fragment } from "react";
 
-const DashboardShell = ({ children }) => {
+const DashboardShell = ({ children, title }) => {
   const { user, signout } = useAuth();
   const router = useRouter();
   const url = `${process.env.NEXT_PUBLIC_DOMAIN}${router.pathname}`;
-  const title = `${process.env.NEXT_PUBLIC_APP_NAME} | ${router.pathname
+  const defaultTitle = `${process.env.NEXT_PUBLIC_APP_NAME} | ${router.pathname
     .slice(1)
     .slice(0, 1)
     .toUpperCase()}${router.pathname.slice(1).slice(1)}`;
 
-  console.log(router);
-
   return (
     <Fragment>
-      <NextSeo title={title} canonical={url} openGraph={{ url }} />
+      <NextSeo
+        title={title ?? defaultTitle}
+        canonical={url}
+        openGraph={{ url, title: title ?? defaultTitle }}
+      />
 
       <Flex flexDirection="column" height="100vh">
         {/* Navbar */}
@@ -37,7 +39,7 @@ const DashboardShell = ({ children }) => {
               <Link>Feedback</Link>
             </NextLink>
 
-            <NextLink href="/dashboard" passHref>
+            <NextLink href="/sites" passHref>
               <Link>Sites</Link>
             </NextLink>
           </Stack>
