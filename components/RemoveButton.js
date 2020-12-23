@@ -22,9 +22,6 @@ const RemoveButton = ({ feedbackId }) => {
   const onClose = () => setIsOpen(false);
 
   const handleDeleteFeedback = async () => {
-    await deleteFeedback(feedbackId);
-    onClose();
-
     mutate(
       ["/api/feedback", user.token],
       (cachedData) => ({
@@ -32,6 +29,10 @@ const RemoveButton = ({ feedbackId }) => {
       }),
       false
     );
+
+    onClose();
+
+    await deleteFeedback(feedbackId);
   };
 
   return (

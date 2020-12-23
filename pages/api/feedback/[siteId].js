@@ -1,15 +1,15 @@
-import { listFeedbackByUser } from "@/lib/db-admin";
-import { auth } from "@/lib/firebase-admin";
-import logger from "@/utils/logger";
+import { getSite, listFeedbackBySite } from "@/lib/db-admin";
+import logger, { prepObjectKeys } from "@/utils/logger";
 
 export default async (req, res) => {
   try {
-    const { uid } = await auth.verifyIdToken(req.headers.token);
+    const requestPromiess = [listFeedbackBySite(req.query.siteId), getSite(req.query.siteId)];
+    const [{ feedback }, { site }] = await Promise.all(requestPromiess);
 
-    const { feedback } = await listFeedbackByUser(uid);
-
-    res.status(200).json({ feedback });
+    res.status(200).json({ feedback, site });
   } catch (error) {
+    console.error(error);
+
     logger.error(
       {
         request: {
@@ -23,6 +23,7 @@ export default async (req, res) => {
       },
       error.message
     );
+
     res.status(500).json({ error: error.message });
   }
 };

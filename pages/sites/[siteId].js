@@ -6,16 +6,13 @@ import { useAuth } from "@/lib/auth";
 import { createFeedback } from "@/lib/db";
 import { listFeedback, listSites } from "@/lib/db-admin";
 import Feedback from "@/components/Feedback";
+import DashboardShell from "@/components/DashboardShell";
 
 const SiteFeedback = ({ initialFeedback }) => {
-  console.log("initialFeedback", initialFeedback);
-
   const [addFeedback, setAllFeedback] = useState(initialFeedback);
   const router = useRouter();
   const { user } = useAuth();
   const inputRef = useRef();
-
-  console.log(router);
 
   const handleSubmit = async (evt) => {
     try {
@@ -39,31 +36,31 @@ const SiteFeedback = ({ initialFeedback }) => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" w="full" maxWidth="700px" margin="0 auto">
-      {/* Input Form */}
-      <Box as="form" onSubmit={handleSubmit}>
-        <FormControl id="comment" my={8}>
-          <FormLabel>Comment</FormLabel>
-          <Input ref={inputRef} type="text" />
-          <Button fontWeight="medium" mt={2} type="submit" disabled={router.isFallback}>
-            Add Comment
-          </Button>
-        </FormControl>
-      </Box>
+    <DashboardShell>
+      <Box display="flex" flexDirection="column" w="full" maxWidth="700px" margin="0 auto">
+        {/* Input Form */}
+        <Box as="form" onSubmit={handleSubmit}>
+          <FormControl id="comment" my={8}>
+            <FormLabel>Comment</FormLabel>
+            <Input ref={inputRef} type="text" />
+            <Button fontWeight="medium" mt={2} type="submit" disabled={router.isFallback}>
+              Add Comment
+            </Button>
+          </FormControl>
+        </Box>
 
-      {/* Feedback */}
-      {addFeedback?.map((feedback) => (
-        <Feedback key={feedback.id} {...feedback} />
-      ))}
-    </Box>
+        {/* Feedback */}
+        {addFeedback?.map((feedback) => (
+          <Feedback key={feedback.id} {...feedback} />
+        ))}
+      </Box>
+    </DashboardShell>
   );
 };
 
 export async function getStaticProps({ params }) {
   const siteId = params.siteId;
   const { siteFeedback: feedback } = await listFeedback(siteId);
-
-  console.log("feedback", feedback);
 
   return {
     props: {
@@ -76,8 +73,6 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   const { sites } = await listSites();
   const paths = sites?.map((site) => ({ params: { siteId: site.id } })) ?? [];
-
-  console.log("paths", paths);
 
   return {
     paths,

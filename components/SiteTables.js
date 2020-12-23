@@ -23,9 +23,13 @@ const SiteTable = ({ sites }) => {
         {sites.map((site) => (
           <Box as="tr" key={site.id}>
             <Td fontWeight="medium">{site.name}</Td>
-            <Td>{site.url}</Td>
             <Td>
-              <NextLink href={`/p/${site.id}`} passHref>
+              <Link href={site.url} isExternal>
+                {site.url}
+              </Link>
+            </Td>
+            <Td>
+              <NextLink href={`/sites/${site.id}`} passHref>
                 <Link color="blue.500" fontWeight="medium">
                   View Feedback
                 </Link>

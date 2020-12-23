@@ -13,14 +13,12 @@ export default function Home({ allFeedback }) {
   return (
     <Flex as="main" direction="column" align="center" justify="center" h="100vh">
       <Head>
-        <title>Fast Feedback</title>
-
         {/* Redirect authenticated user */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
           if (document.cookie && document.cookie.includes('AUTHENTICATED')) {
-            window.location.href = "/dashboard"
+            window.location.href = "/sites"
           }
         `,
           }}
@@ -71,7 +69,7 @@ export default function Home({ allFeedback }) {
 
       {/* User logged in */}
       {user && (
-        <NextLink href="/dashboard" passHref>
+        <NextLink href="/sites" passHref>
           <Button
             as="a"
             mt={4}
