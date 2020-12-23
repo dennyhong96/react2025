@@ -6,8 +6,8 @@ import EmptyState from "@/components/EmptyState";
 import DashboardShell from "@/components/DashboardShell";
 import SiteTables from "@/components/SiteTables";
 import SiteTableSkeleton from "@/components/SiteTableSkeleton";
-
 import SiteTableHeader from "@/components/SiteTableHeader";
+import UpgradeEmptyState from "@/components/UpgradeEmptyState";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -24,10 +24,14 @@ const Dashboard = () => {
     );
   }
 
+  if (data.sites.length) {
+    return <SiteTables sites={data.sites} />;
+  }
+
   return (
     <DashboardShell>
-      <SiteTableHeader />
-      {!data.sites?.length ? <EmptyState /> : <SiteTables sites={data.sites} />}
+      <SiteTableHeader stripeRole={user.stripeRole} />
+      {user.stripeRole ? <EmptyState /> : <UpgradeEmptyState user={user} />}
     </DashboardShell>
   );
 };

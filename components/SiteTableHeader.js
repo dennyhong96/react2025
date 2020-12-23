@@ -3,7 +3,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, Heading } from "@chak
 
 import AddSiteModal from "./AddSiteModal";
 
-const SiteTableHeader = () => {
+const SiteTableHeader = ({ stripeRole }) => {
   return (
     <Fragment>
       <Breadcrumb>
@@ -16,7 +16,7 @@ const SiteTableHeader = () => {
 
       <Flex justify="space-between">
         <Heading mb={8}>My Sites</Heading>
-        <AddSiteModal>+ Add Site</AddSiteModal>
+        {stripeRole && <AddSiteModal>+ Add Site</AddSiteModal>}
       </Flex>
     </Fragment>
   );

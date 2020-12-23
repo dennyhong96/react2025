@@ -11,7 +11,7 @@ export default async (req, res) => {
 
     const { sites } = await listSitesByUser(uid);
 
-    return res.status(200).json({ sites });
+    return res.status(200).json({ sites: [] });
   } catch (error) {
     logger.error(
       {
