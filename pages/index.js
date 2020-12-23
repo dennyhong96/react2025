@@ -13,8 +13,6 @@ export default function Home({ allFeedback }) {
   return (
     <Flex as="main" direction="column" align="center" justify="center" h="100vh">
       <Head>
-        <title>Fast Feedback</title>
-
         {/* Redirect authenticated user */}
         <script
           dangerouslySetInnerHTML={{

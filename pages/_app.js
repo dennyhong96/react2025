@@ -1,8 +1,12 @@
+import { Fragment } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
+import { NextSeo } from "next-seo";
 
 import { AuthProvider } from "@/lib/auth";
 import theme from "@/styles/theme";
+import SEO_DEFAULT from "../next-seo.config";
+import useNProgress from "@/hooks/useNProgress";
 
 const GlobalStyles = () => {
   return (
@@ -25,13 +29,18 @@ const GlobalStyles = () => {
 };
 
 function MyApp({ Component, pageProps }) {
+  useNProgress();
+
   return (
-    <ChakraProvider theme={theme}>
-      <AuthProvider>
-        <GlobalStyles />
-        <Component {...pageProps} />
-      </AuthProvider>
-    </ChakraProvider>
+    <Fragment>
+      <NextSeo {...SEO_DEFAULT} />
+      <ChakraProvider theme={theme}>
+        <AuthProvider>
+          <GlobalStyles />
+          <Component {...pageProps} />
+        </AuthProvider>
+      </ChakraProvider>
+    </Fragment>
   );
 }
 
