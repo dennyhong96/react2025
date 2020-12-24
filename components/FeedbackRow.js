@@ -38,7 +38,15 @@ const FeedbackRow = ({ user, feedback }) => {
       <Td fontWeight="medium">{feedback.author}</Td>
       <Td>{feedback.text}</Td>
       <Td>
-        <Code>/route</Code>
+        <Code
+          maxW="150px"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          overflow="hidden"
+          display="inherit"
+        >
+          {feedback.route ? `/${feedback.route}` : "/"}
+        </Code>
       </Td>
       <Th>
         <Switch

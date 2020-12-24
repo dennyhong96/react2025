@@ -7,6 +7,7 @@ import SiteTableSkeleton from "@/components/SiteTableSkeleton";
 import FeedbackTable from "@/components/FeedbackTable";
 import FeedbackTableHeader from "@/components/FeedbackTableHeader";
 import FeedbackEmptyState from "@/components/FeedbackEmptyState";
+import Loader from "@/components/Loader";
 
 const MyFeedback = () => {
   const { user } = useAuth();

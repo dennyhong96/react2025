@@ -1,14 +1,20 @@
 import { Box, Heading, Text, Divider } from "@chakra-ui/react";
 
-import useDateFormat from "hooks/useDateFormat";
+import useDateFormat from "@/hooks/useDateFormat";
+import { Github, Google } from "./icons";
 
-const Feedback = ({ author, text, createdAt }) => {
+const logos = {
+  "google.com": <Google />,
+  "github.com": <Github />,
+};
+
+const Feedback = ({ author, provider, text, createdAt }) => {
   const { format } = useDateFormat();
 
   return (
     <Box borderRadius={4} maxWidth="700px" w="full">
       <Heading as="h3" size="sm" mb={0} color="gray.900" fontWeight="medium">
-        {author}
+        {author} {logos[provider]}
       </Heading>
 
       <Text color="gray.500" mb={4} fontSize="xs">
