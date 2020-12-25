@@ -6,7 +6,6 @@ import RemoveButton from "@/components/RemoveButton";
 import { updateFeedbackStatus } from "@/lib/db";
 
 const FeedbackRow = ({ user, feedback }) => {
-  // Mutation Helper
   const mutateFeedbackCache = (feedbackId, status) => {
     mutate(
       ["/api/feedback", user.token],
@@ -17,20 +16,16 @@ const FeedbackRow = ({ user, feedback }) => {
     );
   };
 
-  // <Switch/> onChange handler
   const handleUpdateStatus = async (evt, feedbackId) => {
     const oldStatus = !evt.target.checked ? "active" : "pending";
     const newStatus = evt.target.checked ? "active" : "pending";
     try {
-      // Optmistic UI
-      mutateFeedbackCache(feedbackId, newStatus);
+      mutateFeedbackCache(feedbackId, newStatus); // Local mutation
       await updateFeedbackStatus({ feedbackId, status: newStatus });
     } catch (error) {
       console.error("handleUpdateStatus ERROR", error);
-
-      // UI Error Rollback
-      mutateFeedbackCache(feedbackId, oldStatus);
     }
+    mutate(["/api/feedback", user.token]); // Sync with DB
   };
 
   return (

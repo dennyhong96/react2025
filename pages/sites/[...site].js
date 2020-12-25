@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import { useRouter } from "next/router";
 import { Box, FormControl, Textarea, Button } from "@chakra-ui/react";
 
 import { useAuth } from "@/lib/auth";
@@ -7,20 +6,25 @@ import { createFeedback } from "@/lib/db";
 import { getSite, listFeedback, listSites } from "@/lib/db-admin";
 import Feedback from "@/components/Feedback";
 import DashboardShell from "@/components/DashboardShell";
-import useSWR from "swr";
-import fetcher from "@/utils/fetcher";
 import SiteHeader from "@/components/SiteHeader";
+import fetcher from "@/utils/fetcher";
+import { useRouter } from "next/router";
+import useInitialSWR from "@/hooks/useInitialSWR";
 
 const SiteFeedback = ({ initialFeedback, initialSite }) => {
   const router = useRouter();
   const [siteId, route] = router.query.site ?? []; // router.query is empty on ServerRouter at first
   const swrKey = route ? `/api/feedback/${siteId}/${route}` : `/api/feedback/${siteId}`;
-  const { data, mutate } = useSWR(swrKey, fetcher, {
-    initialData: { feedback: initialFeedback, site: initialSite }, // This disables initial fetch
+  const { data, mutate } = useInitialSWR(swrKey, fetcher, {
+    initialData: {
+      feedback: initialFeedback,
+      site: initialSite,
+    },
   });
-
   const { user } = useAuth();
   const inputRef = useRef();
+
+  console.log("site", data);
 
   const handleSubmit = async (evt) => {
     try {
@@ -36,7 +40,7 @@ const SiteFeedback = ({ initialFeedback, initialSite }) => {
         status: "pending",
         createdAt: new Date().toISOString(),
       };
-      const { id } = await createFeedback(newFeedback);
+      const { id } = createFeedback(newFeedback);
 
       mutate({ ...data, feedback: [{ id, ...newFeedback }, ...data.feedback] }, false);
 
@@ -46,12 +50,12 @@ const SiteFeedback = ({ initialFeedback, initialSite }) => {
     }
   };
 
-  return !router.isFallback && data ? (
+  return !router.isFallback && data && user ? (
     <DashboardShell>
       <SiteHeader
         swrKey={swrKey}
-        isSiteOwner={data?.site?.authorId === user?.uid}
-        site={data?.site}
+        isSiteOwner={data.site.authorId === user.uid}
+        site={data.site}
         siteId={siteId}
         route={route}
       />
