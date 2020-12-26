@@ -25,6 +25,12 @@ const GlobalStyles = () => {
           min-height: 100vh;
           background-color: #edf2f7;
         }
+
+        /* NProgress */
+        #nprogress .bar {
+          background: #000;
+          height: 4px;
+        }
       `}
     />
   );
