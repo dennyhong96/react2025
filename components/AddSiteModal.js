@@ -35,6 +35,7 @@ const AddSiteModal = ({ children = "Add Your First Site" }) => {
       createdAt: new Date().toISOString(),
       ...formData,
     };
+
     const { id } = createSite(newSiteData);
 
     // Close the modal.

@@ -10,29 +10,34 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { deleteFeedback } from "@/lib/db";
+
+import { deleteSite } from "@/lib/db";
 import { mutate } from "swr";
 import { useAuth } from "@/lib/auth";
 
-const RemoveButton = ({ feedbackId }) => {
+const RemoveSiteButton = ({ siteId }) => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const cancelRef = useRef();
 
   const onClose = () => setIsOpen(false);
 
-  const handleDeleteFeedback = async () => {
+  const handleDeleteSite = async () => {
+    // Optmistic UI
     mutate(
-      ["/api/feedback", user.token],
+      ["/api/sites", user.token],
       (cachedData) => ({
-        feedback: cachedData.feedback.filter((fb) => fb.id !== feedbackId),
+        ...cachedData,
+        sites: cachedData.sites.filter((site) => site.id !== siteId),
       }),
       false
     );
 
     onClose();
 
-    await deleteFeedback(feedbackId);
+    await deleteSite(siteId);
+
+    mutate(["/api/sites", user.token]); // Sync with DB
   };
 
   return (
@@ -48,16 +53,18 @@ const RemoveButton = ({ feedbackId }) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Feedback
+              Remove Site
             </AlertDialogHeader>
 
-            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+            <AlertDialogBody>
+              Are you sure? This will delete the site and all of the feeback left on it.
+            </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={handleDeleteFeedback} ml={3}>
+              <Button colorScheme="red" fontWeight="bold" onClick={handleDeleteSite} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>
@@ -68,4 +75,4 @@ const RemoveButton = ({ feedbackId }) => {
   );
 };
 
-export default RemoveButton;
+export default RemoveSiteButton;

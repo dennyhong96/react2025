@@ -2,6 +2,7 @@ import NextLink from "next/link";
 import { Box, Link } from "@chakra-ui/react";
 
 import useDateFormat from "@/hooks/useDateFormat";
+import RemoveSiteButton from "./RemoveSiteButton";
 import { Table, Tr, Th, Td } from "./Table";
 
 const SiteTable = ({ sites }) => {
@@ -15,7 +16,7 @@ const SiteTable = ({ sites }) => {
           <Th>Site Link</Th>
           <Th>Feedback Link</Th>
           <Th>Date Added</Th>
-          <Th>{""}</Th>
+          <Th width="50px">{""}</Th>
         </Tr>
       </thead>
 
@@ -36,7 +37,9 @@ const SiteTable = ({ sites }) => {
               </NextLink>
             </Td>
             <Td>{format(site.createdAt)}</Td>
-            <Td>{""}</Td>
+            <Td>
+              <RemoveSiteButton siteId={site.id} />
+            </Td>
           </Box>
         ))}
       </tbody>

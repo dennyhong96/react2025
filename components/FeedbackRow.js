@@ -2,11 +2,10 @@ import { Box, Code, Switch } from "@chakra-ui/react";
 import { mutate } from "swr";
 
 import { Th, Td } from "@/components/Table";
-import RemoveButton from "@/components/RemoveButton";
+import RemoveFeedbackButton from "@/components/RemoveFeedbackButton";
 import { updateFeedbackStatus } from "@/lib/db";
 
 const FeedbackRow = ({ user, feedback }) => {
-  // Mutation Helper
   const mutateFeedbackCache = (feedbackId, status) => {
     mutate(
       ["/api/feedback", user.token],
@@ -17,20 +16,16 @@ const FeedbackRow = ({ user, feedback }) => {
     );
   };
 
-  // <Switch/> onChange handler
   const handleUpdateStatus = async (evt, feedbackId) => {
     const oldStatus = !evt.target.checked ? "active" : "pending";
     const newStatus = evt.target.checked ? "active" : "pending";
     try {
-      // Optmistic UI
-      mutateFeedbackCache(feedbackId, newStatus);
+      mutateFeedbackCache(feedbackId, newStatus); // Local mutation
       await updateFeedbackStatus({ feedbackId, status: newStatus });
     } catch (error) {
       console.error("handleUpdateStatus ERROR", error);
-
-      // UI Error Rollback
-      mutateFeedbackCache(feedbackId, oldStatus);
     }
+    mutate(["/api/feedback", user.token]); // Sync with DB
   };
 
   return (
@@ -56,7 +51,7 @@ const FeedbackRow = ({ user, feedback }) => {
         />
       </Th>
       <Td>
-        <RemoveButton feedbackId={feedback.id} />
+        <RemoveFeedbackButton feedbackId={feedback.id} />
       </Td>
     </Box>
   );

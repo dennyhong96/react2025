@@ -13,11 +13,15 @@ import {
   useToast,
   Switch,
 } from "@chakra-ui/react";
-import { mutate } from "swr";
-import { updateSite } from "@/lib/db";
 import { SettingsIcon } from "@chakra-ui/icons";
 
+import { updateSite } from "@/lib/db";
+import useSWR, { cache } from "swr";
+import fetcher from "@/utils/fetcher";
+import useInitialSWR from "@/hooks/useInitialSWR";
+
 const EditSiteModal = ({ children, site, swrKey }) => {
+  const { data, mutate } = useInitialSWR(swrKey, fetcher, { revalidateOnMount: false });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef();
   const finalRef = useRef();
@@ -27,15 +31,18 @@ const EditSiteModal = ({ children, site, swrKey }) => {
     try {
       const { name, checked } = evt.target;
 
+      // Local mutation
       mutate(
-        swrKey,
-        async (cachedData) => ({
-          ...cachedData,
+        {
+          ...data,
           site: {
-            ...cachedData.site,
-            settings: { ...cachedData.site.settings, [name]: checked },
+            ...data.site,
+            settings: {
+              ...data.site.settings,
+              [name]: checked,
+            },
           },
-        }),
+        },
         false
       );
 
@@ -55,6 +62,8 @@ const EditSiteModal = ({ children, site, swrKey }) => {
     } catch (error) {
       console.error(error);
     }
+
+    mutate(); // Sync with DB
   };
 
   return (
