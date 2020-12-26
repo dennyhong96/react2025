@@ -26,8 +26,6 @@ const EditSiteModal = ({ children, site, swrKey }) => {
   const finalRef = useRef();
   const toast = useToast();
 
-  console.log("EditSiteModal", data);
-
   const handleChange = async (evt) => {
     try {
       const { name, checked } = evt.target;

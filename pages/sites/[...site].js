@@ -24,8 +24,6 @@ const SiteFeedback = ({ initialFeedback, initialSite }) => {
   const { user } = useAuth();
   const inputRef = useRef();
 
-  console.log("site", data);
-
   const handleSubmit = async (evt) => {
     try {
       evt.preventDefault();
@@ -72,13 +70,25 @@ const SiteFeedback = ({ initialFeedback, initialSite }) => {
               h="100px"
             />
             {/* {!loading && <LoginOrLeaveFeedback />} */}
-            <Button type="submit">Submit</Button>
+            <Button
+              backgroundColor="gray.900"
+              color="white"
+              fontWeight="medium"
+              _hover={{ bg: "gray.700" }}
+              _active={{
+                bg: "gray.800",
+                transform: "scale(0.95)",
+              }}
+              type="submit"
+            >
+              Leave Feedback
+            </Button>
           </FormControl>
         </Box>
 
         {/* Feedback */}
         {data?.feedback?.map((feedback) => (
-          <Feedback key={feedback.id} {...feedback} />
+          <Feedback key={feedback.id} {...feedback} settings={data.site.settings} />
         ))}
       </Box>
     </DashboardShell>

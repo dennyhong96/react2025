@@ -10,8 +10,9 @@ import FeedbackTable from "@/components/FeedbackTable";
 import FeedbackTableHeader from "@/components/FeedbackTableHeader";
 
 const SiteFeedback = () => {
-  const { user } = useAuth();
   const router = useRouter();
+  const { user } = useAuth();
+  // Request doesn't start until uesr is truthy
   const { data, error } = useSWR(
     user ? [`/api/feedback/${router.query.siteId}`, user.token] : null,
     fetcher
