@@ -1,19 +1,32 @@
+import { NextSeo } from "next-seo";
+import { Fragment } from "react";
 import { Box, Text } from "@chakra-ui/react";
 
 import { getSite, listFeedback, listSites } from "@/lib/db-admin";
 import Feedback from "@/components/Feedback";
+import { useRouter } from "next/router";
 
 const SiteFeedback = ({ feedback, site }) => {
+  const { query } = useRouter();
+  const colorMode = query.theme ?? "light";
+  const textColor = {
+    light: "gray.900",
+    dark: "gray.200",
+  };
+
   return (
-    <Box display="flex" flexDirection="column" w="full">
-      {feedback?.length ? (
-        feedback.map((feedback) => (
-          <Feedback key={feedback.id} {...feedback} settings={site?.settings} />
-        ))
-      ) : (
-        <Text>There are no comments for this site.</Text>
-      )}
-    </Box>
+    <Fragment>
+      <NextSeo title={`Fast Feedback | ${site?.name}`} />
+      <Box display="flex" flexDirection="column" w="full">
+        {feedback?.length ? (
+          feedback.map((feedback) => (
+            <Feedback key={feedback.id} {...feedback} settings={site?.settings} />
+          ))
+        ) : (
+          <Text color={textColor[colorMode]}>There are no comments for this site.</Text>
+        )}
+      </Box>
+    </Fragment>
   );
 };
 

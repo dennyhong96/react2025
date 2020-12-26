@@ -50,7 +50,7 @@ const SiteFeedback = ({ initialFeedback, initialSite }) => {
   };
 
   return !router.isFallback && data && user ? (
-    <DashboardShell>
+    <DashboardShell title={`Fast Feedback | ${data.site.name}`}>
       <SiteHeader
         swrKey={swrKey}
         isSiteOwner={data.site.authorId === user.uid}

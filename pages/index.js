@@ -4,14 +4,14 @@ import NextLink from "next/link";
 
 import { useAuth } from "@/lib/auth";
 import { Github, Google, Logo } from "@/components/icons";
-import { listFeedbackBySite } from "@/lib/db-admin";
+import { getSite, listFeedbackBySite } from "@/lib/db-admin";
 import Feedback from "@/components/Feedback";
 
-export default function Home({ allFeedback }) {
+export default function Home({ allFeedback, site }) {
   const { user, signinWithGithub, signinWithGoogle } = useAuth();
 
   return (
-    <Flex as="main" direction="column" align="center" justify="center" h="100vh">
+    <Flex as="main" direction="column" align="center" justify="center" pt={16}>
       <Head>
         {/* Redirect authenticated user */}
         <script
@@ -89,18 +89,21 @@ export default function Home({ allFeedback }) {
         </NextLink>
       )}
 
-      {allFeedback.map((feedback) => (
-        <Feedback key={feedback.id} {...feedback} />
-      ))}
+      <Flex direction="column" align="stretch" w="90%" maxW="800px" mt={16}>
+        {allFeedback.map((feedback) => (
+          <Feedback key={feedback.id} {...feedback} settings={site.settings} />
+        ))}
+      </Flex>
     </Flex>
   );
 }
 
 export const getStaticProps = async () => {
-  const myDemoSiteId = "1pZLo9KTYreZzYBd3ikp";
+  const myDemoSiteId = process.env.NEXT_PUBLIC_HOME_PAGE_SITE_ID;
   const { feedback } = await listFeedbackBySite(myDemoSiteId);
+  const { site } = await getSite(myDemoSiteId);
   return {
-    props: { allFeedback: feedback ?? [] },
+    props: { allFeedback: feedback ?? [], site },
     revalidate: 1,
   };
 };
