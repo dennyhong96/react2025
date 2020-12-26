@@ -16,7 +16,7 @@ const SiteFeedback = ({ feedback, site }) => {
 
   return (
     <Fragment>
-      <NextSeo title={`Fast Feedback | ${site.name}`} />
+      <NextSeo title={`Fast Feedback | ${site?.name}`} />
       <Box display="flex" flexDirection="column" w="full">
         {feedback?.length ? (
           feedback.map((feedback) => (
