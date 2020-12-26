@@ -17,7 +17,7 @@ const Feedback = ({ author, provider, text, createdAt, settings }) => {
         {author} {settings?.showIcons && logos[provider]}
       </Heading>
 
-      {settings.showTimestamps && (
+      {settings?.showTimestamps && (
         <Text color="gray.500" mb={4} fontSize="xs">
           {format(createdAt)}
         </Text>

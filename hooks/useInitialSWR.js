@@ -1,17 +1,18 @@
 import { useEffect } from "react";
-import useSWR, { cache } from "swr";
+import useSWR from "swr";
 
 const useInitialSWR = (key, fetchFn, config = {}) => {
-  const swrResponse = useSWR(key, fetchFn, config);
+  const { mutate, ...restResponses } = useSWR(key, fetchFn, config);
   const initialData = config.initialData;
 
   useEffect(() => {
     if (initialData) {
-      return cache.set(key, initialData);
+      mutate(initialData, false);
+      return;
     }
   }, []);
 
-  return swrResponse;
+  return { mutate, ...restResponses };
 };
 
 export default useInitialSWR;

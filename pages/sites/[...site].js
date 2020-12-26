@@ -21,6 +21,7 @@ const SiteFeedback = ({ initialFeedback, initialSite }) => {
       site: initialSite,
     },
   });
+
   const { user } = useAuth();
   const inputRef = useRef();
 

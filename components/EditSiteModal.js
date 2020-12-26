@@ -16,11 +16,12 @@ import {
 import { SettingsIcon } from "@chakra-ui/icons";
 
 import { updateSite } from "@/lib/db";
-import useSWR from "swr";
+import useSWR, { cache } from "swr";
 import fetcher from "@/utils/fetcher";
+import useInitialSWR from "@/hooks/useInitialSWR";
 
 const EditSiteModal = ({ children, site, swrKey }) => {
-  const { data, mutate } = useSWR(swrKey, fetcher, { revalidateOnMount: false });
+  const { data, mutate } = useInitialSWR(swrKey, fetcher, { revalidateOnMount: false });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef();
   const finalRef = useRef();
