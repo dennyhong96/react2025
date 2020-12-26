@@ -1,3 +1,5 @@
+import { NextSeo } from "next-seo";
+import { Fragment } from "react";
 import { Box, Text } from "@chakra-ui/react";
 
 import { getSite, listFeedback, listSites } from "@/lib/db-admin";
@@ -5,15 +7,18 @@ import Feedback from "@/components/Feedback";
 
 const SiteFeedback = ({ feedback, site }) => {
   return (
-    <Box display="flex" flexDirection="column" w="full">
-      {feedback?.length ? (
-        feedback.map((feedback) => (
-          <Feedback key={feedback.id} {...feedback} settings={site?.settings} />
-        ))
-      ) : (
-        <Text>There are no comments for this site.</Text>
-      )}
-    </Box>
+    <Fragment>
+      <NextSeo title={`Fast Feedback | ${site.name}`} />
+      <Box display="flex" flexDirection="column" w="full">
+        {feedback?.length ? (
+          feedback.map((feedback) => (
+            <Feedback key={feedback.id} {...feedback} settings={site?.settings} />
+          ))
+        ) : (
+          <Text>There are no comments for this site.</Text>
+        )}
+      </Box>
+    </Fragment>
   );
 };
 
